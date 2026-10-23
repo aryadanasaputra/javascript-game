@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: var(--color-background-blue);
+    background-color: var(--color-background-primary);
     overflow: hidden;
     font-family: 'Courier New', Courier, monospace;
     color: var(--color-background-white);
