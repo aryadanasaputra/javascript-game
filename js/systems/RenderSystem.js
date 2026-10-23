@@ -1,4 +1,5 @@
 import { GAME_WIDTH, GAME_HEIGHT, GRID_SIZE } from "../core/constants.js";
+import { Player } from "../entities/Player.js";
 
 export class RenderSystem {
     constructor(canvas) {
@@ -6,10 +7,17 @@ export class RenderSystem {
         this.ctx = canvas.getContext('2d')
         this.ctx.imageSmoothingEnable = false
     }
-    render() {
+    render(player) {
         this.ctx.fillStyle = "#0f3460"
         this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT)
         this.renderGrid()
+        this.renderPlayer(player)
+    }
+    renderPlayer(player) {
+        this.ctx.fillStyle = "#1a1a2e"
+        this.ctx.fillRect(player.x, player.y, player.width, player.height)
+        this.ctx.strokeStyle = "white"
+        this.ctx.strokeRect(player.x, player.y, player.width, player.height)
     }
     renderGrid() {
         this.ctx.strokeStyle = "#ffffff"

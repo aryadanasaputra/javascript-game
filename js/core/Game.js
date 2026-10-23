@@ -1,19 +1,41 @@
 import { GAME_WIDTH, GAME_HEIGHT } from "./constants.js"
 import { RenderSystem } from "../systems/RenderSystem.js"
+import { Player } from "../entities/Player.js"
 
 export class Game {
     constructor() {
         this.canvas = document.getElementById("gameCanvas")
         this.ctx = this.canvas.getContext("2d")
         this.renderSystem = new RenderSystem(this.canvas)
+        this.player = new Player()
+        this.keys = {}
 
         this.init()
     }
     init() {
         this.resizeCanvas()
         window.addEventListener('resize', () => this.resizeCanvas())
+        this.setupInput()
 
         requestAnimationFrame((t) => this.gameLoop(t))
+    }
+    update() {
+        this.player.update(this.keys)
+    }
+    gameLoop(timestamp) {
+        this.update()
+        this.renderSystem.render(this.player)
+        requestAnimationFrame((t) => this.gameLoop(t))
+    }
+    setupInput() {
+        window.addEventListener('keydown', (e) => {
+            this.keys[e.key.toLowerCase()] = true
+            console.log(this.keys)
+        })
+        window.addEventListener('keyup', (e) => {
+            this.keys[e.key.toLowerCase()] = false
+            console.log(this.keys)
+        })
     }
     resizeCanvas() {
         const ratio = 16 / 9
@@ -36,10 +58,5 @@ export class Game {
         this.canvas.style.width = w + 'px'
         this.canvas.style.height = h + 'px'
         this.canvas.style.margin = `${margin}px`
-    }
-    gameLoop(timestamp) {
-        // console.log(timestamp / 100)
-        this.renderSystem.render()
-        requestAnimationFrame((t) => this.gameLoop(t))
     }
 }
